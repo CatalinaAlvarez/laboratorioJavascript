@@ -60,6 +60,10 @@ class BoardView{
         this.ctx = canvas.getContext("2d");
     }
 
+    clean(){
+        this.ctx.clearRect(0,0,board.width,board.height);
+    }
+
     draw(){
         for(var i=this.board.elements.length-1;i>=0;i--){
             var el = this.board.elements[i];
@@ -67,12 +71,9 @@ class BoardView{
             draw(this.ctx,el);
         }
     }
-
-
 }
 
-function draw(ctx,element){
-    
+function draw(ctx,element){    
     switch(element.kind){
          case "rectangle":
             ctx.fillRect(element.x,element.y,element.width,element.height);
@@ -113,6 +114,7 @@ window.addEventListener("load", controller);
 
 
 function controller(){
+    board_view.clean();
     board_view.draw(); 
     window.requestAnimationFrame(controller);
 
