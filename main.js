@@ -61,7 +61,7 @@ class BoardView{
     }
 
     clean(){
-        this.ctx.clearRect(0,0,board.width,board.height);
+        this.ctx.clearRect(0,0,this.board.width,this.board.height);
     }
 
     draw(){
@@ -70,6 +70,11 @@ class BoardView{
 
             draw(this.ctx,el);
         }
+    }
+
+    play(){
+        this.clean();
+        this.draw(); 
     }
 }
 
@@ -114,8 +119,7 @@ window.addEventListener("load", controller);
 
 
 function controller(){
-    board_view.clean();
-    board_view.draw(); 
+    board_view.play();
     window.requestAnimationFrame(controller);
 
 }
