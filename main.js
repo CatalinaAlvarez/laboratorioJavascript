@@ -1,11 +1,4 @@
 class Board{
-    width;
-    height;
-    playing;
-    game_over;
-    bars;
-    ball;
-    playing; 
 
     constructor(width, height){
         this.width = width;
@@ -14,10 +7,10 @@ class Board{
         this.game_over = false;
         this.bars = [];
         this.ball = null;
-        this.playing = false;
     }
 
     get elements(){
+        //Devuelve los elementos:las barras y la pelota
         var elements = this.bars.map(function(bar){ return bar;});
         elements.push(this.ball);
         return elements;
@@ -31,17 +24,18 @@ class Ball{
         this.y = y;
         this.radius = radius;
         this.board = board; 
-        this.speed_x = 1;
+        this.speed_x = 2;
         this.speed_y = 0;
         this.direction = -1;
         this.bounce_angle = 0;
 		this.max_bounce_angle = Math.PI / 12;
-        this.speed = 1;
+        this.speed = 2;
 
         this.board.ball = this;
         this.kind = "circle";
     }
     move(){
+        //Genera el movimiento de la pelota
         this.x += (this.speed_x * this.direction);
         this.y += (this.speed_y);
     }
@@ -70,6 +64,7 @@ class Ball{
     }
 
     wallCollision(){
+        //Reacciona a la colisión de la pelota con el muro de arriba y abajo
         if(ball.y + ball.radius > board_view.canvas.height || ball.y - ball.radius <0){
             ball.speed_y = -ball.speed_y;
         }
@@ -89,14 +84,17 @@ class Bar{
     }
 
     down(){
+        //Mueve la barra hacia abajo
         this.y += this.speed;
     }
 
     up(){
+        //Mueve la barra hacia arriba
         this.y -= this.speed;
     }
 
     toString(){
+        //Retorna el string
         return "x: " + this.x + " y: " + this.y;
     }
 }
@@ -112,10 +110,12 @@ class BoardView{
     }
 
     clean(){
+        //Limpia la pantalla
         this.ctx.clearRect(0,0,this.board.width,this.board.height);
     }
 
     draw(){
+        //dibuja los elementos alojados en el Array Elements
         for(var i=this.board.elements.length-1;i>=0;i--){
             var el = this.board.elements[i];
 
@@ -124,6 +124,7 @@ class BoardView{
     }
 
     check_collisions(){
+        //Revisa dónde se está generando la colisión 
         for (var i = this.board.bars.length-1; i >= 0; i--) {
             var bar = this.board.bars[i];
             if(hit(bar,this.board.ball)){
@@ -137,6 +138,7 @@ class BoardView{
     }
 
     play(){
+        //Recibe las funciones para poner a funcionar el juego
         if(this.board.playing){
             this.clean();
             this.draw();
@@ -145,6 +147,7 @@ class BoardView{
         }
     }
 }
+
 
 function hit(a,b){
     //Revisa si a colisiona con b
@@ -171,7 +174,8 @@ function hit(a,b){
     return hit;
 }
 
-function draw(ctx,element){    
+function draw(ctx,element){ 
+    //Recibe el tipo de elemento, y lo dibuja   
     switch(element.kind){
          case "rectangle":
             ctx.fillRect(element.x,element.y,element.width,element.height);
@@ -194,21 +198,24 @@ var barDown = new Bar(1,399,800,1,board);
 var canvas = document.getElementById("canvas");
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(350,100,10,board);
+var scoreP1 = 0;
+var scoreP2 = 0;
 
 document.addEventListener("keydown", function(ev){
-    if(ev.keyCode == 38){
+    //Añade el EventListener de qué tecla se presiona para generar el movimiento con up() y down()
+    if(ev.keyCode == 87){
         ev.preventDefault();
         //movimiento de la barra1 hacia arriba
         bar.up();
-    }else if(ev.keyCode == 40){
+    }else if(ev.keyCode == 83){
         ev.preventDefault();
         //movimiento de la barra1 hacia abajo
         bar.down();
-    }else if(ev.keyCode == 87){
+    }else if(ev.keyCode == 38){
         ev.preventDefault();
         //movimiento de la barra2 hacia arriba
         bar2.up();
-    }else if(ev.keyCode == 83){
+    }else if(ev.keyCode == 40){
         ev.preventDefault();
         //movimiento de la barra2 hacia abajo
         bar2.down();
@@ -225,7 +232,7 @@ window.requestAnimationFrame(controller);
 window.addEventListener("load", controller);
 
 function controller(){
+    //Llama la función play(), y controla el juego para que se ejecute cada vez que hay un movimiento
     board_view.play();
     window.requestAnimationFrame(controller);
-
 }
