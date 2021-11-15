@@ -19,7 +19,7 @@ class Board{
 
     get elements(){
         var elements = this.bars;
-        elements.push(this.ball);
+        //elements.push(this.ball);
         return elements;
     }
 
@@ -72,13 +72,13 @@ class BoardView{
 }
 
 function draw(ctx,element){
-    if(element !== null && element.hasOwnProperty("kind")){
-        switch(element.kind){
-            case "rectangle":
-                ctx.fillRect(element.x,element.y,element.width,element.height);
-                break;
-        }
+    
+    switch(element.kind){
+         case "rectangle":
+            ctx.fillRect(element.x,element.y,element.width,element.height);
+            break;
     }
+    
 }
 
 var board = new Board(800,400);
@@ -89,15 +89,19 @@ var board_view = new BoardView(canvas, board);
 
 document.addEventListener("keydown", function(ev){
     if(ev.keyCode == 38){
+        ev.preventDefault();
         //movimiento de la barra1 hacia arriba
         bar.up();
     }else if(ev.keyCode == 40){
+        ev.preventDefault();
         //movimiento de la barra1 hacia abajo
         bar.down();
     }else if(ev.keyCode == 87){
+        ev.preventDefault();
         //movimiento de la barra2 hacia arriba
-        bar2.down();
+        bar2.up();
     }else if(ev.keyCode == 83){
+        ev.preventDefault();
         //movimiento de la barra2 hacia abajo
         bar2.down();
     }
@@ -105,7 +109,7 @@ document.addEventListener("keydown", function(ev){
 
 window.requestAnimationFrame(controller);
 
-window.addEventListener("load", main);
+window.addEventListener("load", controller);
 
 
 function controller(){
