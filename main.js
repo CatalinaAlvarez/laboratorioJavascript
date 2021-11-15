@@ -18,7 +18,7 @@ class Board{
     }
 
     get elements(){
-        var elements = this.bars;
+        var elements = this.bars.map(function(bar){ return bar;});
         elements.push(this.ball);
         return elements;
     }
@@ -31,11 +31,16 @@ class Ball{
         this.y = y;
         this.radius = radius;
         this.board = board; 
-        this.speed_x = 3;
+        this.speed_x = 2;
         this.speed_y = 0;
+        this.direction = 1;
 
         this.board.ball = this;
         this.kind = "circle";
+    }
+    move(){
+        this.x += (this.speed_x * this.direction);
+        this.y += (this.speed_y);
     }
 }
 
@@ -88,7 +93,8 @@ class BoardView{
 
     play(){
         this.clean();
-        this.draw(); 
+        this.draw();
+        this.board.ball.move();
     }
 }
 
