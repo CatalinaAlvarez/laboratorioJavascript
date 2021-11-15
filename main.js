@@ -19,10 +19,24 @@ class Board{
 
     get elements(){
         var elements = this.bars;
-        //elements.push(this.ball);
+        elements.push(this.ball);
         return elements;
     }
 
+}
+
+class Ball{
+    constructor(x,y,radius,board){
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.board = board; 
+        this.speed_x = 3;
+        this.speed_y = 0;
+
+        this.board.ball = this;
+        this.kind = "circle";
+    }
 }
 
 class Bar{
@@ -83,6 +97,12 @@ function draw(ctx,element){
          case "rectangle":
             ctx.fillRect(element.x,element.y,element.width,element.height);
             break;
+        case "circle":
+            ctx.beginPath();
+            ctx.arc(element.x,element.y,element.radius,0,7);
+            ctx.fill();
+            ctx.closePath();
+            break;
     }
     
 }
@@ -92,6 +112,7 @@ var bar = new Bar(20,100,40,100,board);
 var bar2 = new Bar(740,100,40,100,board);
 var canvas = document.getElementById("canvas");
 var board_view = new BoardView(canvas, board);
+var ball = new Ball(350,100,10,board);
 
 document.addEventListener("keydown", function(ev){
     if(ev.keyCode == 38){
