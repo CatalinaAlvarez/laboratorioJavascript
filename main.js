@@ -67,7 +67,12 @@ class Ball{
 
         if(this.x > (this.board.width / 2)) this.direction = -1;
         else this.direction = 1;
+    }
 
+    collision2(){
+        if(ball.y + ball.radius > board_view.canvas.height || ball.y - ball.radius <0){
+            ball.speed_y = -ball.speed_y;
+        }
     }
 }
 
@@ -122,9 +127,12 @@ class BoardView{
         for (var i = this.board.bars.length-1; i >= 0; i--) {
             var bar = this.board.bars[i];
             if(hit(bar,this.board.ball)){
-                this.board.ball.collision(bar);
-            }
-            
+                if(bar == barUp || bar == barDown){
+                    this.board.ball.collision2(bar);
+                }else{
+                    this.board.ball.collision(bar);
+                }
+            }            
         }
     }
 
@@ -141,7 +149,7 @@ class BoardView{
 function hit(a,b){
     //Revisa si a colisiona con b
     var hit = false;
-    //Colsiones horizontales
+    //Colisiones horizontales
     if(b.x + b.width >= a.x && b.x < a.x + a.width)
     {
         //Colisiones verticales
@@ -159,10 +167,8 @@ function hit(a,b){
     {
         if(a.y <= b.y && a.y + a.height >= b.y + b.height)
             hit = true;
-    }
-    
+    }    
     return hit;
-
 }
 
 function draw(ctx,element){    
@@ -183,6 +189,8 @@ function draw(ctx,element){
 var board = new Board(800,400);
 var bar = new Bar(20,100,40,100,board);
 var bar2 = new Bar(740,100,40,100,board);
+var barUp = new Bar(1,1,800,1,board);
+var barDown = new Bar(1,399,800,1,board);
 var canvas = document.getElementById("canvas");
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(350,100,10,board);
