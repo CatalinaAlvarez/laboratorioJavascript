@@ -69,7 +69,7 @@ class Ball{
         else this.direction = 1;
     }
 
-    collision2(){
+    wallCollision(){
         if(ball.y + ball.radius > board_view.canvas.height || ball.y - ball.radius <0){
             ball.speed_y = -ball.speed_y;
         }
@@ -128,7 +128,7 @@ class BoardView{
             var bar = this.board.bars[i];
             if(hit(bar,this.board.ball)){
                 if(bar == barUp || bar == barDown){
-                    this.board.ball.collision2(bar);
+                    this.board.ball.wallCollision(bar);
                 }else{
                     this.board.ball.collision(bar);
                 }
