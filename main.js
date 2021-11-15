@@ -92,9 +92,11 @@ class BoardView{
     }
 
     play(){
-        this.clean();
-        this.draw();
-        this.board.ball.move();
+        if(this.board.playing){
+            this.clean();
+            this.draw();
+            this.board.ball.move();
+        }
     }
 }
 
@@ -137,9 +139,14 @@ document.addEventListener("keydown", function(ev){
         ev.preventDefault();
         //movimiento de la barra2 hacia abajo
         bar2.down();
+    }else if(ev.keyCode == 32){
+        ev.preventDefault();
+        //barra espaciadora
+        board.playing = !board.playing;
     }
 });
 
+board_view.draw();
 window.requestAnimationFrame(controller);
 
 window.addEventListener("load", controller);
